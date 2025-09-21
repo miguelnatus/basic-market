@@ -1,0 +1,9 @@
+<h1>{{ tenants.name }}</h1>
+
+<h2>Our Members</h2>
+
+<ul>
+    {% for member in members %}
+        <li>{{ member.username }} - {{ member.email }}</li>
+    {% endfor %}
+</ul>
