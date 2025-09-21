@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+  <main class="mx-auto max-w-5xl px-4 py-10">
+    {% for block in page.body %}
+      {% if block.block_type == "heading" %}
+        <h1 class="text-3xl font-bold mb-4">{{ block.value }}</h1>
+      {% elif block.block_type == "paragraph" %}
+        <div class="prose">{{ block.value|richtext }}</div>
+      {% elif block.block_type == "image" %}
+        {% image block.value fill-1200x600 class="rounded-xl my-6" %}
+      {% elif block.block_type == "cta" %}
+        <a href="{{ block.value.url }}" class="inline-block mt-6 px-6 py-3 rounded-xl border">
+          {{ block.value.text }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </main>
+{% endblock %}
