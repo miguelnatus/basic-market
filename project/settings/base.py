@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
-    "home",
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -46,8 +45,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",        # multisite
-    "tenancy",
     "core",
+    "home",
+    "tenancy",
+    "search",
 ]
 
 SITE_ID = 1 
