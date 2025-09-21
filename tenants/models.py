@@ -6,17 +6,13 @@ class Tenant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
-    
-class TenantAwareModel(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+        return f"{self.name} ({self.domain})"
 
-    class Meta:
-        abstract = True
-
-class Member(TenantAwareModel):
-    username = models.CharField(max_length=100)
-    email = models.EmailField()
+class Member(models.Model):
+    tenant = models.ForeignKey(Tenant, on_delete=models.PROTECT, related_name="members")
+    name = models.CharField(max_length=120)
+    role = models.CharField(max_length=120, blank=True)
+    photo = models.ImageField(upload_to="members/", blank=True, null=True)
 
     def __str__(self):
-        return self.username
+        return f"{self.name} – {self.tenant.name}"

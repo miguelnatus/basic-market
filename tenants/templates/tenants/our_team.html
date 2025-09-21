@@ -1,9 +1,18 @@
-<h1>{{ tenants.name }}</h1>
+{# templates/tenants/our_team.html #}
+<h1>{{ tenant.name }}</h1>
+<p class="subtitle">Domínio: {{ tenant.domain }}</p>
 
-<h2>Our Members</h2>
+<h2>Nossa equipe</h2>
 
 <ul>
-    {% for member in members %}
-        <li>{{ member.username }} - {{ member.email }}</li>
-    {% endfor %}
+  {% for m in members %}
+    <li>
+      {% if m.photo %}
+        <img src="{{ m.photo.url }}" alt="{{ m.name }}" style="height:40px;vertical-align:middle;margin-right:8px">
+      {% endif %}
+      <strong>{{ m.name }}</strong>{% if m.role %} — {{ m.role }}{% endif %}
+    </li>
+  {% empty %}
+    <li>Nenhum membro cadastrado.</li>
+  {% endfor %}
 </ul>
