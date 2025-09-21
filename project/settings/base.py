@@ -1,9 +1,9 @@
 
 import os
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     # Seus apps (UMA única entrada por app)
     "core",
     "tenancy",
-    "home",      # não repita "home" + "home.apps.HomeConfig" ao mesmo tempo
+    "home.apps.HomeConfig",  # <- usa a classe, não repita "home" em outro lugar
     "search",
 ]
 
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     "tenancy.middleware.CurrentTenantMiddleware",  # <-- nosso
 ]
 
-ROOT_URLCONF = "plataforma.urls"
+ROOT_URLCONF = "project.urls"
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "plataforma.wsgi.application"
+WSGI_APPLICATION = "project.wsgi.application"
 
 
 # Database
