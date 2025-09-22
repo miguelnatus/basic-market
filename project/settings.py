@@ -16,7 +16,15 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+PLATFORM_DOMAINS = ["plataforma.local", "www.plataforma.local"]
+PLATFORM_ROOT = "plataforma.local"  # se quiser suportar subdomínios como loja1.plataforma.local
+
+ALLOWED_HOSTS = [
+    "127.0.0.1", "localhost",
+    "plataforma.local", "www.plataforma.local",
+    "annasebba.local", "loja1.plataforma.local",
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,18 +50,24 @@ ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],  # <- sua pasta global de templates
+        "APP_DIRS": True,                  # <- também carrega templates dentro dos apps
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
+
+# TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates"]
+# TEMPLATES[0]["APP_DIRS"] = True
+
+
 
 WSGI_APPLICATION = 'project.wsgi.application'
 

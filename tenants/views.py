@@ -1,21 +1,21 @@
-# tenants/views.py
 from django.views.generic import TemplateView
-from django.shortcuts import render
-from .models import Member
-from .utilities import get_tenant
+from django.template.loader import select_template
+from django.http import HttpResponse
 
-class OurTeamView(TemplateView):
-    template_name = "tenants/our_team.html"
+def _clean_domain(h: str) -> str:
+    h = h.split(":", 1)[0].lower()
+    return h[4:] if h.startswith("www.") else h
 
-    def dispatch(self, request, *args, **kwargs):
-        self.tenant = get_tenant(request)  # ou request.tenant se você já tem middleware
-        if not self.tenant:
-            return render(request, "tenants/no_tenant.html", status=404)
-        return super().dispatch(request, *args, **kwargs)
+class HomeView(TemplateView):
+    system_template = "system/home.html"      # plataforma
+    tenant_fallback = "tenants/home.html"     # fallback
 
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx["tenant"] = self.tenant
-        ctx["site"] = self.tenant
-        ctx["members"] = Member.objects.filter(tenant=self.tenant).order_by("name")
-        return ctx
+    def get(self, request, *args, **kwargs):
+        tenant = getattr(request, "tenant", None)
+        if tenant:
+            domain = _clean_domain(request.get_host())
+            tpl = select_template([f"sites/{domain}/home.html", self.tenant_fallback])
+            ctx = {"tenant": tenant}
+            return HttpResponse(tpl.render(ctx, request))
+        tpl = select_template([self.system_template])
+        return HttpResponse(tpl.render({"product_name": "Basic Market"}, request))
